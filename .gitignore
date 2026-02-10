@@ -1,0 +1,40 @@
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Carpetas de dependencias (muy común)
+node_modules/
+venv/
+env/
+.venv/
+__pycache__/
+*.pyc
+
+# Archivos de logs y temporales
+*.log
+*.tmp
+temp/
+tmp/
+
+# Archivos de IDEs / editores
+.vscode/
+.idea/
+*.sublime-workspace
+*.swp
+*.swo
+
+# Archivos personales o sensibles (¡importante!)
+.env
+.env.local
+secrets.json
+config/database.yml
+*.pem
+*.key
+
+# Carpetas de build / dist
+dist/
+build/
+out/
+target/
+bin/
