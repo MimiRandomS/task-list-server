@@ -5,6 +5,14 @@ const PORT = 3000;
 const fs = require("fs");
 const path = require("path");
 const routesPath = path.join(__dirname, "routes");
+const allowedMethods = ["GET", "POST", "PUT", "DELETE"];
+
+app.use((req, res, next) => {
+  if (!allowedMethods.includes(req.method)) {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+  next();
+});
 
 app.use(express.json());
 fs.readdirSync(routesPath).forEach((file) => {
@@ -13,9 +21,9 @@ fs.readdirSync(routesPath).forEach((file) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("<h1>Bienvenido a la API de Task List</h1>");
+  res.send("<h1>Welcome to a Task List API</h1>");
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
