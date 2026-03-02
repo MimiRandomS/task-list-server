@@ -1,11 +1,10 @@
 //app.js
 const express = require("express");
 const app = express();
-const PORT = 3000;
-const fs = require("fs");
-const path = require("path");
-const routesPath = path.join(__dirname, "routes");
+require("dotenv").config();
+const PORT = process.env.PORT || 3000;
 const allowedMethods = ["GET", "POST", "PUT", "DELETE"];
+app.use(express.json());
 
 app.use((req, res, next) => {
   if (!allowedMethods.includes(req.method)) {
@@ -14,11 +13,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json());
-fs.readdirSync(routesPath).forEach((file) => {
-  const route = require(`./routes/${file}`);
-  app.use("/tasks", route);
-});
+app.use("/tasks", require("./routes/list-edit-router"));
+app.use("/tasks", require("./routes/list-view-router"));
+app.use("/", require("./routes/auth"));
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to a Task List API</h1>");
