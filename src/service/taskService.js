@@ -1,36 +1,36 @@
 // taskService.js
-const { db } = require("../database/db");
+const Task = require("../Schema/taskSchema");
 
-function getAllTasks() {
-  return Array.from(db.values());
+async function getAllTasks() {
+  return await Task.find();
 }
 
-function getTaskById(id) {
-  return db.get(id);
+async function getTaskById(id) {
+  return await Task.findById(id);
 }
 
-function createTask(task) {
-  db.set(task.id, task);
-  return task;
+async function createTask(taskData) {
+  const task = new Task(taskData);
+  return await task.save();
 }
 
-function deleteTask(id) {
-  db.delete(id);
+async function updateTask(id, updatedData) {
+  return await Task.findByIdAndUpdate(id, updatedData, { new: true });
 }
 
-function updateTask(id, updatedTask) {
-  if (!db.has(id)) {
-    return null;
-  }
+async function deleteTask(id) {
+  return await Task.findByIdAndDelete(id);
+}
 
-  db.set(id, updatedTask);
-  return updatedTask;
+async function getAllTasksByStatus(status) {
+  return await Task.find({ isCompleted: status });
 }
 
 module.exports = {
   getAllTasks,
   getTaskById,
   createTask,
-  deleteTask,
   updateTask,
+  deleteTask,
+  getAllTasksByStatus
 };

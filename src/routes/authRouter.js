@@ -22,7 +22,7 @@ function authMiddleware(req, res, next) {
   }
 }
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = authService.authenticate(email, password);
   if (!user) {
@@ -40,7 +40,7 @@ router.post("/login", (req, res) => {
   res.json({ token });
 });
 
-router.get("/admin", authMiddleware, (req, res) => {
+router.get("/admin", authMiddleware, async (req, res) => {
     if (req.user.role !== "admin") {
         return res.status(403).json({ error: "Forbidden" });
     }

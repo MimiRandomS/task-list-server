@@ -1,16 +1,20 @@
-const dbUsers = [
-    { id: 1, email: "admin@gmail.com", password: "admin", role: "admin" },
-    { id: 2, email: "salome@gmail.com", password: "salome", role: "user" }
-]
+// authService.js
+const bcrypt = require("bcrypt");
+const User = require("../Schema/userSchema");
 
-function authenticate(email, password) {
-    const user = dbUsers.find(u => u.email === email && u.password === password);
-    if (!user) {
-        return null;
-    }
-    return user;
-};
+async function findUserByEmail(email) {
+  return await User.findOne({ email });
+}
+
+async function authenticate(email, password) {
+  const user = await findUserByEmail(email);
+  if (!user) return null;
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return null;
+  return user;
+}
 
 module.exports = {
-    authenticate
-}
+  findUserByEmail,
+  authenticate
+};

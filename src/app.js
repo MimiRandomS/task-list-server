@@ -4,6 +4,8 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 const allowedMethods = ["GET", "POST", "PUT", "DELETE"];
+const connectDB = require("./database/db");
+connectDB();
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -13,9 +15,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/tasks", require("./routes/list-edit-router"));
-app.use("/tasks", require("./routes/list-view-router"));
-app.use("/", require("./routes/auth"));
+app.use("/tasks", require("./routes/listEditRouter"));
+app.use("/tasks", require("./routes/listViewRouter"));
+app.use("/users", require("./routes/userRouter"));
+app.use("/", require("./routes/authRouter"));
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to a Task List API</h1>");
